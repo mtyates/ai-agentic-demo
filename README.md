@@ -103,3 +103,4 @@ These vulnerabilities exist for SAST demonstration purposes only. See `docs/secu
 ## License
 
 MIT
+
