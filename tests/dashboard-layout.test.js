@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
 
 const styles = fs.readFileSync(
-  path.join(__dirname, "../src/public/styles.css"),
+  path.join(__dirname, "../app/static/styles.css"),
   "utf8"
 );
 
@@ -15,8 +17,14 @@ function getCssRule(selector) {
 test("transaction status badges remain in the table cell flow", () => {
   const statusBadgeRule = getCssRule(".status-badge");
 
-  expect(statusBadgeRule).toContain("display: inline-flex");
-  expect(statusBadgeRule).not.toMatch(/position\s*:\s*absolute\b/);
-  expect(statusBadgeRule).not.toMatch(/margin-left\s*:\s*-/);
-  expect(statusBadgeRule).not.toMatch(/z-index\s*:/);
+  assert.match(statusBadgeRule, /display:\s*inline-flex/);
+  assert.doesNotMatch(statusBadgeRule, /position\s*:\s*absolute\b/);
+  assert.doesNotMatch(statusBadgeRule, /margin-left\s*:\s*-/);
+  assert.doesNotMatch(statusBadgeRule, /z-index\s*:/);
+});
+
+test("transfer form actions stay aligned within the form card", () => {
+  const formActionsRule = getCssRule(".form-actions");
+
+  assert.doesNotMatch(formActionsRule, /margin-left\s*:\s*\d+px/);
 });
