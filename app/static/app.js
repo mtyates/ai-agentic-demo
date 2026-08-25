@@ -25,15 +25,28 @@ document.addEventListener("DOMContentLoaded", function () {
         const resultDiv = document.getElementById("transfer-result");
         if (result.success) {
           // DEMO UX BUG: shows success even for invalid (negative/zero) amounts
-          resultDiv.innerHTML =
-            '<div class="alert alert-success" style="font-size:18px;font-weight:800;padding:24px;">✅ Transfer completed successfully!<br>Amount transferred: <strong>$' +
-            result.amount +
-            '</strong><br><span style="font-size:12px;color:#276749;">Transaction ID: ' +
-            result.transferId +
-            "</span></div>";
+          const successDiv = document.createElement("div");
+          successDiv.className = "alert alert-success";
+          successDiv.setAttribute("style", "font-size:18px;font-weight:800;padding:24px;");
+          const amountStrong = document.createElement("strong");
+          amountStrong.textContent = "$" + result.amount;
+          const tidSpan = document.createElement("span");
+          tidSpan.setAttribute("style", "font-size:12px;color:#276749;");
+          tidSpan.textContent = "Transaction ID: " + result.transferId;
+          successDiv.appendChild(document.createTextNode("✅ Transfer completed successfully!"));
+          successDiv.appendChild(document.createElement("br"));
+          successDiv.appendChild(document.createTextNode("Amount transferred: "));
+          successDiv.appendChild(amountStrong);
+          successDiv.appendChild(document.createElement("br"));
+          successDiv.appendChild(tidSpan);
+          resultDiv.innerHTML = "";
+          resultDiv.appendChild(successDiv);
         } else {
-          resultDiv.innerHTML =
-            '<div class="alert alert-error">Error: ' + result.error + "</div>";
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "alert alert-error";
+          errorDiv.textContent = "Error: " + result.error;
+          resultDiv.innerHTML = "";
+          resultDiv.appendChild(errorDiv);
         }
       })
       .catch(() => {
